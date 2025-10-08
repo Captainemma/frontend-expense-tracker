@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import DashboardLayout from "../../components/layouts/DashboardLayout";
-import { toast, Toaster } from "react-hot-toast";
+import { toast } from "react-hot-toast";
 
 function Settings() {
   const [user, setUser] = useState(null);
@@ -17,14 +17,20 @@ function Settings() {
 
   const token = localStorage.getItem("token");
 
+  // ✅ Use your live backend URL
+  const API_BASE_URL = "https://expense-tracker-backend-jkha.onrender.com/api/v1";
+
   // Load current user data
   useEffect(() => {
     axios
-      .get("http://localhost:7000/api/v1/auth/getUser", {
+      .get(`${API_BASE_URL}/auth/getUser`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => setUser(res.data))
-      .catch((err) => toast.error("Error fetching user"));
+      .catch((err) => {
+        console.error(err);
+        toast.error("Error fetching user");
+      });
   }, [token]);
 
   // Upload profile picture
@@ -36,7 +42,7 @@ function Settings() {
       formData.append("image", profilePic);
 
       const res = await axios.post(
-        "http://localhost:7000/api/v1/auth/upload-image",
+        `${API_BASE_URL}/auth/upload-image`,
         formData,
         {
           headers: {
@@ -61,7 +67,7 @@ function Settings() {
 
     try {
       const res = await axios.put(
-        "http://localhost:7000/api/v1/auth/updateUser",
+        `${API_BASE_URL}/auth/updateUser`,
         { fullName: user.fullName, email: user.email },
         {
           headers: {
@@ -89,7 +95,7 @@ function Settings() {
 
     try {
       await axios.put(
-        "http://localhost:7000/api/v1/auth/change-password",
+        `${API_BASE_URL}/auth/change-password`,
         { oldPassword: currentPassword, newPassword },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -108,7 +114,6 @@ function Settings() {
 
   return (
     <DashboardLayout>
-     
       <div className="max-w-2xl mx-auto p-6">
         <h2 className="text-2xl font-bold mb-6">Settings</h2>
 
