@@ -78,6 +78,8 @@ const Login = () => {
             type="password"
           />
 
+          
+
           {error && <p className="text-red-500 text-xs pb-2.5">{error}</p>}
 
           <button type="submit" className="btn-primary">
@@ -90,6 +92,16 @@ const Login = () => {
               SignUp
             </Link>
           </p>
+
+          {/* Forgot Password Link */}
+          <div className="text-right mb-4">
+            <Link
+              to="/forgot-password"
+              className="text-sm text-primary hover:underline"
+            >
+              Forgot Password?
+            </Link>
+          </div>
         </form>
       </div>
     </AuthLayout>
